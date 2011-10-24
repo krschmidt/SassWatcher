@@ -1,0 +1,10 @@
+I got tired of setting up a terminal to do sass --watch all the time, so I wrote a program to monitor the file system for changes in Sass/Scss files and run sass --update on them automatically. 
+
+Information on Sass can be found at http://sass-lang.com/
+
+You may need to install pyinotify (https://github.com/seb-m/pyinotify) and pynotify (http://home.gna.org/py-notify/), and you should make sure inotify is turned on for your Kernel (it probably is). Because this depends on the Linux Kernel for file system notifications, this program will only work on Linux.
+
+If you get errors about WD=-1 or the message No space left on device (ENOSPC), you need to increase the number of files you can watch. See the documentation at: https://github.com/seb-m/pyinotify/wiki/Frequently-Asked-Questions
+Essentially, try typing sysctl -n fs.inotify.max_user_watches to see your current limit. To increase it, as root type: sysctl -n -w fs.inotify.max_user_watches=32768
+To make this change permanent, edit /etc/sysctl.conf and add this to the end: fs.inotify.max_user_watches=32768
+You can, of course, use any number you'd like. Alternatively, you can reduce the number of directories to monitor by making this program's path variable more specific. This will also make this program run a good deal faster on startup.
