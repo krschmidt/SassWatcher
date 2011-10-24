@@ -21,13 +21,13 @@ class OnWriteHandler(pyinotify.ProcessEvent):
         print path, "was", action
         try:
             message = subprocess.check_output(["sass", "--update", path], stderr=subprocess.STDOUT)
-            if message != self.lastMessage and time.time() - self.lastTime> 0.5:
+            if message != self.lastMessage or time.time() - self.lastTime> 0.5:
                 pynotify.Notification("Success!", message, self.happy).show()
                 self.lastMessage = message
                 self.lastTime = time.time()
         except subprocess.CalledProcessError, e:
             message = e.output.strip()
-            if message != self.lastMessage and time.time() -self.lastTime > 0.5:
+            if message != self.lastMessage or time.time() -self.lastTime > 0.5:
                 pynotify.Notification("Error:", message, self.sad).show()
                 self.lastMessage = message
                 self.lastTime = time.time()
